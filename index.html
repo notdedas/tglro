@@ -1,100 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeenGovernment Bill Tracker</title>
+    <title>T.G.L.R.O.</title>
 
     <style>
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
-            background: linear-gradient(to bottom, #f4f4f4, #e9e9e9);
+            font-family: 'Segoe UI', Arial;
+            background: linear-gradient(to bottom, #0f172a, #020617);
+            color: white;
         }
 
-        /* HEADER */
         header {
             background: repeating-linear-gradient(
                 135deg,
-                #000000,
-                #000000 40px,
-                #f2e94e 40px,
-                #f2e94e 80px
+                #000,
+                #000 40px,
+                #e6d200 40px,
+                #e6d200 80px
             );
-            padding: 25px 20px;
-            text-align: center;
-            color: white;
-            border-bottom: 4px solid #000;
+            padding: 15px;
         }
 
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .flag {
-            width: 55px;
-            height: 55px;
-            border-radius: 6px;
-            border: 2px solid white;
-        }
-
-        .title {
-            font-size: 28px;
-            font-weight: 800;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+        .menu {
+            font-weight: bold;
+            cursor: pointer;
         }
 
         .subtitle {
-            font-size: 14px;
-            margin-top: 6px;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+            font-size: 12px;
+            color: #ddd;
         }
 
-        /* CONTAINER */
         .container {
-            padding: 25px;
-            max-width: 850px;
+            padding: 20px;
+            max-width: 900px;
             margin: auto;
         }
 
-        /* BILL CARDS */
-        .bill {
-            background: white;
+        .section { display: none; }
+        .active { display: block; }
+
+        /* CARDS */
+        .card {
+            background: rgba(30,41,59,0.7);
             padding: 18px;
-            margin-bottom: 14px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-            border-left: 6px solid #f2e94e;
-            transition: 0.25s;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        .bill:hover {
+        .card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+            border: 1px solid #e6d200;
         }
 
-        .bill a {
-            text-decoration: none;
-            color: #111;
-            font-size: 19px;
-            font-weight: 600;
-            display: block;
+        .card:active {
+            transform: scale(0.97);
         }
 
-        .bill a:hover {
-            color: #000;
+        /* BACK BUTTON */
+        .back-btn {
+            background: #e6d200;
+            color: black;
+            padding: 8px 12px;
+            display: inline-block;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        /* OPTIONAL SMALL DECOR LINE */
-        .divider {
-            height: 3px;
-            background: linear-gradient(to right, #000, #f2e94e, #000);
-            margin: 20px 0;
-            border-radius: 2px;
+        /* SEARCH */
+        .search {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 15px;
         }
+
+        /* BILL */
+        .bill {
+            background: #e6d200;
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* PARTIES */
+        .party-header {
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            padding: 10px;
+            border-bottom: 2px solid #e6d200;
+            font-weight: bold;
+        }
+
+        .party-card {
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            background: rgba(30,41,59,0.8);
+            cursor: pointer;
+        }
+
+        .party-card:hover {
+            border: 1px solid #e6d200;
+        }
+
+        .symbol {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* PARTY DETAIL */
+        .party-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .party-top img {
+            width: 60px;
+            border: 2px solid #e6d200;
+            border-radius: 8px;
+        }
+
+        .info-box {
+            background: rgba(30,41,59,0.8);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        a { color: #e6d200; }
 
     </style>
 </head>
@@ -102,10 +146,7 @@
 <body>
 
 <header>
-    <div class="header-top">
-        <img src="flag.png" class="flag">
-        <div class="title">T.G.L.R.O. — TeenGovernment Bill Tracker</div>
-    </div>
+    <div class="menu" onclick="showSection('home')">☰ T.G.L.R.O.</div>
     <div class="subtitle">
         TeenGovernment Legislative Records & Oversight Organization
     </div>
@@ -113,23 +154,128 @@
 
 <div class="container">
 
-    <div class="divider"></div>
+<!-- HOME -->
+<div id="home" class="section active">
+    <div class="card" onclick="showSection('about')">About Us</div>
+    <div class="card" onclick="showSection('guide')">New User Guide</div>
+    <div class="card" onclick="openConstitution()">The Constitution</div>
+    <div class="card" onclick="showSection('bills')">Bills</div>
+    <div class="card" onclick="showSection('parties')">Parties</div>
+    <div class="card" onclick="showSection('news')">News</div>
+</div>
 
-    <!-- ADD YOUR BILLS BELOW -->
+<!-- ABOUT -->
+<div id="about" class="section">
+    <div class="back-btn" onclick="showSection('home')">← Back</div>
+    <h1>About Us</h1>
+    <p>WIP</p>
+</div>
 
-    <div class="bill">
-        <a href="https://www.reddit.com/r/TeenGovernment/comments/1sio3li/digital_capital_punishment_act_v2/" target="_blank">
-            Digital Capital Punishment Act V2
-        </a>
+<!-- GUIDE -->
+<div id="guide" class="section">
+    <div class="back-btn" onclick="showSection('home')">← Back</div>
+    <h1>New User Guide</h1>
+    <p>WIP</p>
+</div>
+
+<!-- NEWS -->
+<div id="news" class="section">
+    <div class="back-btn" onclick="showSection('home')">← Back</div>
+    <h1>News</h1>
+    <p>WIP</p>
+</div>
+
+<!-- BILLS -->
+<div id="bills" class="section">
+    <div class="back-btn" onclick="showSection('home')">← Back</div>
+    <h1>Bills</h1>
+
+    <input class="search" id="billSearch" placeholder="Search bills..." onkeyup="searchBills()">
+
+    <div class="bill" data-name="Education Bill">
+        <a href="https://reddit.com/YOUR_LINK" target="_blank">Education Bill</a>
     </div>
 
-    <div class="bill">
-        <a href="https://reddit.com/YOUR_LINK_HERE" target="_blank">
-            Another Bill Name
-        </a>
+    <div class="bill" data-name="Healthcare Bill">
+        <a href="#">Healthcare Bill</a>
     </div>
 
 </div>
+
+<!-- PARTIES -->
+<div id="parties" class="section">
+    <div class="back-btn" onclick="showSection('home')">← Back</div>
+    <h1>Parties</h1>
+
+    <input class="search" id="partySearch" placeholder="Search parties..." onkeyup="searchParties()">
+
+    <div class="party-header">
+        <div>Symbol</div>
+        <div>Name</div>
+        <div>Members</div>
+    </div>
+
+    <div class="party-card" data-name="Sample Party" onclick="showSection('party1')">
+        <img src="symbol.png" class="symbol">
+        <div>Sample Party</div>
+        <div>10</div>
+    </div>
+
+</div>
+
+<!-- PARTY DETAIL -->
+<div id="party1" class="section">
+    <div class="back-btn" onclick="showSection('parties')">← Back</div>
+
+    <div class="party-top">
+        <img src="symbol.png">
+        <h1>Sample Party</h1>
+    </div>
+
+    <div class="info-box">
+        <strong>Announcement:</strong><br>
+        <a href="#">View Reddit Post</a>
+    </div>
+
+    <div class="info-box">
+        <strong>Ideology:</strong>
+        <p>WIP</p>
+    </div>
+
+    <div class="info-box">
+        <strong>Members:</strong>
+        <p>WIP</p>
+    </div>
+
+</div>
+
+</div>
+
+<script>
+function showSection(id) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+function openConstitution() {
+    window.open("https://www.reddit.com/r/TeenGovernment/comments/1s92igz/constitution_with_grammar_fixes/", "_blank");
+}
+
+/* SEARCH SYSTEM */
+function searchBills() {
+    let input = document.getElementById("billSearch").value.toLowerCase();
+    document.querySelectorAll(".bill").forEach(b => {
+        b.style.display = b.dataset.name.toLowerCase().includes(input) ? "block" : "none";
+    });
+}
+
+function searchParties() {
+    let input = document.getElementById("partySearch").value.toLowerCase();
+    document.querySelectorAll(".party-card").forEach(p => {
+        p.style.display = p.dataset.name.toLowerCase().includes(input) ? "grid" : "none";
+    });
+}
+</script>
 
 </body>
 </html>
